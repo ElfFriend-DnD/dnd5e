@@ -14,7 +14,7 @@ workflow:
 
 variables:
   ZIP_FILE_NAME: "dnd5e-$CI_COMMIT_TAG.zip"
-  RELEASE_DOWNLOAD: "https://gitlab.com/$CI_PROJECT_PATH/releases/$CI_COMMIT_TAG/downloads/$ZIP_FILE_NAME"
+  RELEASE_DOWNLOAD: "https://gitlab.com/$CI_PROJECT_PATH/releases/$CI_COMMIT_TAG/downloads/dnd5e-$CI_COMMIT_TAG.zip"
 
 # 1. Test if the version matches the tag and exit if not
 test-version:
