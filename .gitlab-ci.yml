@@ -74,9 +74,11 @@ release:
     description: '**Installation:** To manually install this release, please use the following manifest URL: https://gitlab.com/$CI_PROJECT_PATH/-/releases/$CI_COMMIT_TAG/downloads/system.json'
     assets:
       links:
+        # links the release to the system manifest from this CI workflow
         - name: 'system.json'
           url: https://gitlab.com/$CI_PROJECT_PATH/-/jobs/artifacts/$CI_COMMIT_TAG/raw/system.json?job=build
           filepath: '/system.json'
+        # links the release to the zip file from this CI workflow
         - name: '$ZIP_FILE_NAME'
           url: https://gitlab.com/$CI_PROJECT_PATH/-/jobs/artifacts/$CI_COMMIT_TAG/raw/$ZIP_FILE_NAME?job=build
           filepath: '/$ZIP_FILE_NAME'
