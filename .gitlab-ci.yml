@@ -15,6 +15,7 @@ workflow:
 
 variables:
   RELEASE_DOWNLOAD: "https://gitlab.com/$CI_PROJECT_PATH/-/jobs/artifacts/$CI_COMMIT_TAG/raw/dnd5e.zip?job=deploy"
+  RELEASE_MANIFEST: "https://gitlab.com/$CI_PROJECT_PATH/-/jobs/artifacts/$CI_COMMIT_TAG/raw/system.json?job=deploy"
 
 # 1. Test if the version matches the tag and exit if not
 test-version:
@@ -59,6 +60,8 @@ build:
 release:
   stage: deploy
   image: registry.gitlab.com/gitlab-org/release-cli:latest
+  script:
+  - echo 'running release_job'
   artifacts:
     # include the system json and created zip file as artifacts of the job
     paths:
@@ -68,10 +71,11 @@ release:
   release:
     tag_name: '$CI_COMMIT_TAG'
     ref: '$CI_COMMIT_TAG'
+    description: '**Installation:** To manually install this release, please use the following manifest URL: $RELEASE_MANIFEST'
     assets:
       links:
         - name: 'system.json'
-          url: 'https://gitlab.com/$CI_PROJECT_PATH/-/jobs/artifacts/$CI_COMMIT_TAG/raw/system.json?job=deploy'
+          url: $RELEASE_MANIFEST
           filepath: '/system.json' # optional
         - name: 'dnd5e.zip'
           url: $RELEASE_DOWNLOAD
