@@ -76,7 +76,5 @@ release:
       links:
         - name: 'system.json'
           url: https://gitlab.com/$CI_PROJECT_PATH/-/jobs/artifacts/$CI_COMMIT_TAG/raw/system.json?job=build
-          filepath: 'system.json'
-        - name: '$ZIP_FILE_NAME'
+        - name: $ZIP_FILE_NAME
           url: https://gitlab.com/$CI_PROJECT_PATH/-/jobs/artifacts/$CI_COMMIT_TAG/raw/$ZIP_FILE_NAME?job=build
-          filepath: '$ZIP_FILE_NAME'
