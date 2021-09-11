@@ -12,3 +12,7 @@ exports.css = css.compile;
 exports.cleanPacks = gulp.series(packs.clean);
 exports.compilePacks = gulp.series(packs.compile);
 exports.extractPacks = gulp.series(packs.extract);
+exports.buildAll = gulp.parallel(
+  css.compile,
+  packs.compile
+);
