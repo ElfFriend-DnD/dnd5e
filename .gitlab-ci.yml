@@ -37,6 +37,8 @@ build:
         exit 1
       fi
 
+    - echo $CI_PROJECT_ID
+
     # Validate that the package download url matches the release asset that will be created.
     - |
       if [[ ! $RELEASE_DOWNLOAD == $PACKAGE_DOWNLOAD ]]; then
