@@ -95,5 +95,5 @@
   "compatibleCoreVersion": "0.8.9",
   "url": "https://gitlab.com/foundrynet/dnd5e",
   "manifest": "https://gitlab.com/foundrynet/dnd5e/raw/master/system.json",
-  "download": "https://gitlab.com/foundrynet/dnd5e/-/archive/release-21.0.0/dnd5e-release-21.0.0.zip"
+  "download": "https://gitlab.com/akrigline/dnd5e/-/releases/release-21.0.0/downloads/dnd5e-release-21.0.0.zip"
 }
