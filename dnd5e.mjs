@@ -89,6 +89,7 @@ Hooks.once("init", function() {
   CONFIG.Token.objectClass = canvas.Token5e;
   CONFIG.time.roundTime = 6;
   CONFIG.Dice.DamageRoll = dice.DamageRoll;
+  CONFIG.Dice.DamageGroupRoll = dice.DamageGroupRoll;
   CONFIG.Dice.D20Roll = dice.D20Roll;
   CONFIG.MeasuredTemplate.defaults.angle = 53.13; // 5e cone RAW should be 53.13 degrees
 

@@ -1,4 +1,4 @@
-import {d20Roll, damageRoll} from "../dice/dice.mjs";
+import {d20Roll, damageRoll, damageGroupRoll} from "../dice/dice.mjs";
 import simplifyRollFormula from "../dice/simplify-roll-formula.mjs";
 import AbilityUseDialog from "../applications/item/ability-use-dialog.mjs";
 import Proficiency from "./actor/proficiency.mjs";
@@ -1361,7 +1361,7 @@ export default class Item5e extends Item {
 
     // Get roll data
     const dmg = this.system.damage;
-    const parts = dmg.parts.map(d => d[0]);
+    const parts = foundry.utils.deepClone(dmg.parts); // deep clone to avoid mutating the original item data
     const rollData = this.getRollData();
     if ( spellLevel ) rollData.item.level = spellLevel;
 
@@ -1387,7 +1387,7 @@ export default class Item5e extends Item {
 
     // Adjust damage from versatile usage
     if ( versatile && dmg.versatile ) {
-      parts[0] = dmg.versatile;
+      parts[0][0] = dmg.versatile;
       messageData["flags.dnd5e.roll"].versatile = true;
     }
 
@@ -1440,7 +1440,7 @@ export default class Item5e extends Item {
      */
     if ( Hooks.call("dnd5e.preRollDamage", this, rollConfig) === false ) return;
 
-    const roll = await damageRoll(rollConfig);
+    const roll = await damageGroupRoll(rollConfig);
 
     /**
      * A hook event that fires after a damage has been rolled for an Item.

@@ -209,6 +209,59 @@ export async function damageRoll({
   return roll;
 }
 
+
+/**
+ * A standardized helper function for managing core 5e damage rolls.
+ * Holding SHIFT, ALT, or CTRL when the attack is rolled will "fast-forward".
+ * This chooses the default options of a normal attack with no bonus, Critical, or no bonus respectively
+ *
+ * @param {DamageRollConfiguration} configuration  Configuration data for the Damage roll.
+ * @returns {Promise<DamageRoll|null>}             The evaluated DamageRoll, or null if the workflow was canceled.
+ */
+ export async function damageGroupRoll({
+  parts=[], data={}, event,
+  allowCritical=true, critical=false, criticalBonusDice, criticalMultiplier,
+  multiplyNumeric, powerfulCritical, criticalBonusDamage,
+  fastForward=false, template, title, dialogOptions,
+  chatMessage=true, messageData={}, rollMode, flavor
+}={}) {
+  // Handle input arguments
+  const defaultRollMode = rollMode || game.settings.get("core", "rollMode");
+
+  // Construct the DamageGroupRoll instance
+  const {isCritical, isFF} = _determineCriticalMode({critical, fastForward, event});
+  const damageGroupRoll = new CONFIG.Dice.DamageGroupRoll(parts, data, {
+    flavor: flavor || title,
+    rollMode,
+    critical: isFF ? isCritical : false,
+    criticalBonusDice,
+    criticalMultiplier,
+    criticalBonusDamage,
+    multiplyNumeric: multiplyNumeric ?? game.settings.get("dnd5e", "criticalDamageModifiers"),
+    powerfulCritical: powerfulCritical ?? game.settings.get("dnd5e", "criticalDamageMaxDice")
+  });
+
+  // Prompt a Dialog to further configure the DamageGroupRoll
+  if ( !isFF ) {
+    const configured = await damageGroupRoll.configureDialog({
+      title,
+      defaultRollMode: defaultRollMode,
+      defaultCritical: isCritical,
+      template,
+      allowCritical
+    }, dialogOptions);
+    if ( configured === null ) return null;
+  }
+
+  // Evaluate the configured damage group
+  await damageGroupRoll.evaluate();
+
+  // Create a Chat Message
+  if ( damageGroupRoll && chatMessage ) await damageGroupRoll.toMessage(messageData);
+  return damageGroupRoll;
+}
+
+
 /* -------------------------------------------- */
 
 /**
